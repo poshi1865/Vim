@@ -17,16 +17,17 @@ set laststatus=2
 set noshowmode
 set encoding=utf-8
 set termguicolors
+set t_Co=256
+set signcolumn=yes
 
-colorscheme molokai
+let g:loaded_matchparen=1
+
+
+"Python highlighting
+"let g:python_highlight_all = 1
 
 "LINE NUMBERING
-:set number relativenumber
-:augroup numbertoggle
-:  autocmd!
-:  autocmd BufEnter,FocusGained,InsertLeave * set relativenumber
-:  autocmd BufLeave,FocusLost,InsertEnter   * set norelativenumber
-:augroup END
+set number
 
 "Matching Brackets
 inoremap { {}<Left>
@@ -56,14 +57,33 @@ Plug 'xolox/vim-misc'
 Plug 'xolox/vim-easytags'
 Plug 'kien/ctrlp.vim'
 Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'ycm-core/YouCompleteMe'
+"Plug 'vim-python/python-syntax'
+Plug 'morhetz/gruvbox'
+Plug 'tmsvg/pear-tree'
 
 call plug#end()
 
+"Compiling 
+autocmd FileType python map <buffer> <F9> :w<CR>:exec '!clear;python3' shellescape(@%, 1)<CR>
+autocmd filetype c nnoremap <F9> :w <bar> exec '!gcc '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
+autocmd filetype cpp nnoremap <F9> :w <bar> exec '!g++ '.shellescape('%').' -o '.shellescape('%:r').' && ./'.shellescape('%:r')<CR>
+
+"colorscheme
+set background=dark
+let g:gruvbox_contrast_dark='hard'
+colorscheme gruvbox
+
 "cpp highlight
 let g:cpp_no_function_highlight = 1
+let g:c_no_function_highlight = 1
 
 "NERDTree
 let g:NERDTreeWinPos = "left"
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
+
+"You complete me
+let g:ycm_autoclose_preview_window_after_completion=1
+map <leader>g  :YcmCompleter GoToDefinitionElseDeclaration<CR>
 
